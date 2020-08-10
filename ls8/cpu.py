@@ -7,7 +7,8 @@ class CPU:
 
     def __init__(self):
         """Construct a new CPU."""
-        pass
+        self.mem = [0] * 256
+        self.register = [0] * 8 
 
     def load(self):
         """Load a program into memory."""
@@ -36,7 +37,12 @@ class CPU:
 
         if op == "ADD":
             self.reg[reg_a] += self.reg[reg_b]
-        #elif op == "SUB": etc
+        elif op == "HLT":
+            pass
+        elif op == "LDI":
+            pass
+        elif op == "PRN":
+            pass
         else:
             raise Exception("Unsupported ALU operation")
 
@@ -63,3 +69,10 @@ class CPU:
     def run(self):
         """Run the CPU."""
         pass
+    
+
+    def ram_read(self, address): 
+        return self.mem[address]
+
+    def ram_write(self, address, value):
+        return self.mem[address] = value
