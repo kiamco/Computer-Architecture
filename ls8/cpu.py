@@ -52,8 +52,21 @@ class CPU:
             print(self.reg[reg_a])
             self.pc += 2
         elif op == MUL:
-                self.reg[reg_a] *= self.reg[reg_b]
-                self.pc += 3
+            self.reg[reg_a] *= self.reg[reg_b]
+            self.pc += 3
+        elif instruction_register == PUSH:
+            self.reg[SP] -= 1
+            stack_address = self.reg[SP]
+            register_number = self.ram_read(self.pc + 1)
+            register_number_value = self.reg[register_number]
+            self.ram_write(stack_address, register_number_value)
+            self.pc += 2
+        elif instruction_register == POP:
+            stack_value = self.ram_read(self.reg[SP])
+            register_number = self.ram_read(self.pc + 1)
+            self.reg[register_number] = stack_value
+            self.reg[SP] += 1 
+            self.pc += 2
         else:
             raise Exception("Unsupported ALU operation")
 
@@ -84,7 +97,7 @@ class CPU:
             instruction_register = self.ram[self.pc]
             reg_a = self.ram[self.pc + 1]
             reg_b = self.ram[self.pc + 2]
-            self.trace()
+            # self.trace()
             
             self.alu(instruction_register, reg_a, reg_b)
             # if instruction_register == HLT:
